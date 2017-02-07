@@ -1,0 +1,23 @@
+{
+  "name": "doug-cli",
+  "version": "0.0.1",
+  "description": "DOUG CLI",
+  "author": "Edward Ruchevits",
+  "license": "",
+  "main": "src",
+  "bin": {
+    "doug": "src/index.js"
+  },
+  "dependencies": {
+    "bluebird": "^3.4.7",
+    "chalk": "^1.1.3",
+    "cli-table": "^0.3.1",
+    "commander": "^2.9.0",
+    "glob": "^7.1.1",
+    "jsonfile": "^2.4.0",
+    "lodash": "^4.17.4",
+    "solc": "^0.4.2",
+    "web3": "^0.18.2"
+  },
+  "devDependencies": {}
+}
