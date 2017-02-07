@@ -65,10 +65,36 @@ function compile(sources){
     return new Promise((resolve, reject) => {
 	    const output = solc.compile({sources: sources}, 1)
 	    if (output.errors) return reject(output.errors)
-        const result = _.mapValues(output.contracts, compiled => ({
-            abi: JSON.parse(compiled.interface),
-            unlinked_binary: compiled.bytecode
-        }))
+
+    	console.log(output.contracts['Tallysticks'])
+    	console.log(output.contracts['Keystore'])
+
+        const result = _.mapValues(output.contracts, compiled => {
+
+        	let contractType = undefined
+
+        	const abi = JSON.parse(compiled.interface)
+
+        	const setMainAddressFunc = compiled.functionHashes['setMainAddress(address)']
+        	const addContractFunc = compiled.functionHashes['addContract(bytes32,address)']
+        	const removeContractFunc = compiled.functionHashes['removeContract(bytes32)']
+        	const contractsFunc = compiled.functionHashes['contracts(bytes32)']
+
+			const hasConstructor = _.some(abi, abiDef => (abiDef.type === 'constructor'))
+        	const hasSetMainAddressFunc = (setMainAddressFunc && setMainAddressFunc === 'db9771f5') || false
+        	const hasAddContractFunc = (addContractFunc && addContractFunc === '5188f996') || false
+        	const hasRemoveContractFunc = (removeContractFunc && removeContractFunc === 'a43e04d8') || false
+        	const hasContractsFunc = (contractsFunc && contractsFunc === 'ec56a373') || false
+        	
+        	if (hasSetMainAddressFunc) contractType = hasConstructor ? 'DougEntity' : 'DougContract'
+        	else if (hasAddContractFunc && hasRemoveContractFunc && hasContractsFunc) contractType = 'DougMain'
+
+        	return {
+	        	type: contractType,
+	            abi: abi,
+	            unlinked_binary: compiled.bytecode
+	        }
+        })
 		return resolve(result)
     })
 }
