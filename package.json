@@ -1,7 +1,7 @@
 {
   "name": "doug-cli",
   "version": "0.0.1",
-  "description": "DOUG CLI",
+  "description": "Command-line tool for redeployment of Solidity contracts following the DOUG paradigm",
   "author": "Edward Ruchevits",
   "license": "",
   "main": "src",
