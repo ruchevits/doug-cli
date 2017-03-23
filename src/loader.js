@@ -66,10 +66,12 @@ function compile(sources){
 	    const output = solc.compile({sources: sources}, 1)
 	    if (output.errors) return reject(output.errors)
 
-    	console.log(output.contracts['Tallysticks'])
-    	console.log(output.contracts['Keystore'])
+	    // Solidity 0.4.10
+	    const keys = _.map(output.contracts, (value, key) => {
+	    	return key.substring(key.indexOf(':')+1)
+	    })
 
-        const result = _.mapValues(output.contracts, compiled => {
+        const contents = _.map(output.contracts, compiled => {
 
         	let contractType = undefined
 
@@ -95,7 +97,8 @@ function compile(sources){
 	            unlinked_binary: compiled.bytecode
 	        }
         })
-		return resolve(result)
+
+		return resolve(_.zipObject(keys, contents))
     })
 }
 

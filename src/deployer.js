@@ -89,8 +89,8 @@ module.exports = class DougDeployer {
 	        const options = {
 	            from: this.web3.eth.coinbase,
 	            data: '0x' + compiled.unlinked_binary,
-	            gas: 2555751,
-	            gasLimit: '0x2fefd8'
+	            gas: '0x2fefd8',
+	            // gasLimit: '0x2fefd8'
 	        }
 	        contract.new(options, (err, deployed) => {
 	            if (err) return reject(err)
@@ -107,8 +107,8 @@ module.exports = class DougDeployer {
     	
 		const txOptions = {
 			from: this.web3.eth.coinbase,
-			gas: 2455751,
-			gasLimit: '0x2fefd8'
+			gas: '0x2fefd8',
+			// gasLimit: '0x2fefd8'
 		}
 
         return new Promise((resolve, reject) => {

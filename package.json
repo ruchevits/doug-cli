@@ -16,7 +16,7 @@
     "glob": "^7.1.1",
     "jsonfile": "^2.4.0",
     "lodash": "^4.17.4",
-    "solc": "^0.4.2",
+    "solc": "^0.4.10",
     "web3": "^0.18.2"
   },
   "devDependencies": {}
