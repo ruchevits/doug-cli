@@ -27,6 +27,7 @@ program
   .option('--address [address]', 'address of the main contract')
   .option('--contracts-file [contractsFile]', 'path to the file with contract definitions')
   .option('--address-file [addressFile]', 'path to the file where the main contract address will be saved')
+  .option('--block-file [blockFile]', 'path to the file where block number will be saved')
   .option('--contracts [contracts]', 'comma-separated list of child contracts to deploy')
   .description('Deploy contracts')
   .action((req, optional) => {
@@ -38,6 +39,7 @@ program
       children: req.contracts.split(','),
       input: req.contractsFile,
       output: req.addressFile,
+      blockFile: req.blockFile,
       web3: {
         host: process.env.TALLYSTICKS_RPC_HOST || '127.0.0.1',
         port: process.env.TALLYSTICKS_RPC_PORT || '8545'

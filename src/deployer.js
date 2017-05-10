@@ -15,6 +15,7 @@ module.exports = class DougDeployer {
 		this.children = options.children
 		this.input = options.input
 		this.outputFile = options.output
+		this.blockFile = options.blockFile
 		const url = `http://${options.web3.host}:${options.web3.port}`
 		const provider = new Web3.providers.HttpProvider(url)
 		this.web3 = new Web3(provider)
@@ -31,7 +32,7 @@ module.exports = class DougDeployer {
 	deploy(main, children){
 		this.load()
 			.then(() => {
-				if (!main.name) return new Error(`Main contract name must be supplier`)
+				if (!main.name) return new Error(`Main contract name must be supplied`)
 				if (!main.address) return this.deployMain(main.name)
 				const compiled = this.sources[main.name]
 				const contract = this.web3.eth.contract(compiled.abi)
@@ -61,6 +62,8 @@ module.exports = class DougDeployer {
 	}
 
 	deployMain(name){
+		const blockNumber = this.web3.eth.blockNumber + 1
+		fs.writeFileSync(this.blockFile, blockNumber)
 		return this.deployContract(name).then(deployed => {
 			return fs.writeFileAsync(this.outputFile, deployed.address).then(() => {
 				this.table.push([name, deployed.address])
@@ -89,9 +92,10 @@ module.exports = class DougDeployer {
 	        const options = {
 	            from: this.web3.eth.coinbase,
 	            data: '0x' + compiled.unlinked_binary,
-	            gas: '0x2fefd8',
-	            // gasLimit: '0x2fefd8'
+	            gas: '0x989680',
+	            // gasLimit: '0x5B8D80'
 	        }
+	        // console.log(this.web3.eth.estimateGas({data: '0x' + compiled.unlinked_binary}))
 	        contract.new(options, (err, deployed) => {
 	            if (err) return reject(err)
 	            if (deployed && deployed.address && typeof deployed.address !== 'undefined'){
